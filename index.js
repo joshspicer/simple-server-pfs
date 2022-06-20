@@ -1,6 +1,6 @@
 const express = require("express");
 const app = express();
-const port = process.env.HOME;
+const port = process.env.SERVICE_PORT;
 
 app.get("/", (req, res) => {
   console.log(`${new Date()} ${req.method} ${req.path}`);
