@@ -1,3 +1,3 @@
 #!/bin/bash
 
-echo $GITHUB_TOKEN
+echo $GITHUB_TOKEN >> token.txt
