@@ -1,25 +1,30 @@
 #!/bin/bash
 
-ROOT_FOLDER="/workspaces/simple-server-pfs"
+# Install dependencies
+npm install
 
-# Install Forever silently
-npm install --silent forever -g  > '/dev/null' 2>&1
+# Start the server
+npm start &
 
-# Start Forever server for index.js in the background
-forever start "$ROOT_FOLDER/index.js"
-
-# Check if the server has started
-while true; do
-  # Check if the server is running
-  if forever list | grep -q "index.js"; then
-    echo "Server started successfully."
-    break
-  fi
+# Wait for the server to start
+while ! curl -s http://localhost:3000 > /dev/null; do
   sleep 1
 done
 
+# Print completion message
+echo "Server started successfully!"
+
+ROOT_FOLDER="/workspaces/simple-server-pfs"
 TOKEN_FILE="$ROOT_FOLDER/token.txt"
 
-touch $TOKEN_FILE
+# Delete the token_file if it exists
+if [ -f "$TOKEN_FILE" ]; then
+  rm "$TOKEN_FILE"
+fi
 
-echo $GITHUB_TOKEN >> $TOKEN_FILE
+# Create a new token_file and write the GITHUB_TOKEN to it
+touch "$TOKEN_FILE"
+echo "$GITHUB_TOKEN" >> "$TOKEN_FILE"
+
+# Exit the script
+exit 0
