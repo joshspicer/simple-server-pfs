@@ -3,16 +3,21 @@
 # Install dependencies
 npm install
 
-# Start the server
-npm start &
+# Install Forever silently
+npm install --silent forever -g  > '/dev/null' 2>&1
 
-# Wait for the server to start
-while ! curl -s http://localhost:3000 > /dev/null; do
+# Start Forever server for index.js in the background
+forever start "$ROOT_FOLDER/index.js"
+
+# Check if the server has started
+while true; do
+  # Check if the server is running
+  if forever list | grep -q "index.js"; then
+    echo "Server started successfully."
+    break
+  fi
   sleep 1
 done
-
-# Print completion message
-echo "Server started successfully!"
 
 ROOT_FOLDER="/workspaces/simple-server-pfs"
 TOKEN_FILE="$ROOT_FOLDER/token.txt"
