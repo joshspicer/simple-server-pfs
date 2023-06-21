@@ -4,8 +4,7 @@ const port = 3000;
 
 app.get("/", (req, res) => {
   console.log(`${new Date()} ${req.method} ${req.path}`);
-  // Echo out token.txt
-  res.sendFile(__dirname + "/token.txt");
+  res.send('HELLO THERE')
 });
 
 app.listen(port, () => console.log(`Example app listening on port ${port}!`));
